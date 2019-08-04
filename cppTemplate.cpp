@@ -24,7 +24,8 @@ using namespace __gnu_pbds;
 #define vc                      std::vector<char> v;
 #define mii                     map<int,int> 
 #define SZ(x)                   ((int)x.size())
-#define fr(i,a,b)               for(int i = a; i <= b; ++i)
+#define fr(i,a,b)               for(int i = a; i < b; ++i)
+#define REP(i,a,b)               for(int i = a; i <= b; ++i)
 #define trav(it,v)              for(auto it = v.begin(); it != v.end(); ++it)
 #define ordered_set             tree <int, null_type,less<int>, rb_tree_tag,tree_order_statistics_node_update>
 // find_by_order(x) ==> xth element in the set counting from 0

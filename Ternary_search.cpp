@@ -1,5 +1,5 @@
 
-// intially choose hi and lo both are excluded (hi,lo)
+// intially choosen hi and lo both are excluded (hi,lo)
 
 int ternary_search(int hi,int lo){ // for increasing then decreasing 
     while(hi - lo > 2) {

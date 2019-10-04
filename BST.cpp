@@ -31,7 +31,6 @@ void build() {
                 update(i,a[i]); // building in O(nlogn)
         }
 }
-// updateRange(l,r,val) queryRanfe(l,r);
 // can be used 
 void solve() {
         cin >> n;

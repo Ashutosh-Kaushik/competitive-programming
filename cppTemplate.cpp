@@ -100,6 +100,34 @@ template<typename T> T InverseMod(T a,T m){return pow(a,m-2,m);}
 template<typename T>int SquareDist(T a,T b){int x = abs(a.fi - b.fi),y = abs(a.se - b.se); return x*x + y*y;}
 template<typename T> T pow2(T a,T b){T ans=1; while(b>0){ if(b%2==1) ans=(ans*a); b/=2; a=(a*a); } return ans; }
  
+ll add(ll a,ll b,ll mod) {
+        ll c = (a + b);
+        if(c >= mod) {
+                c -= mod;
+        }
+        return c;
+}
+ll sub(ll a,ll b,ll mod) {
+        ll c = (a - b);
+        if(c < 0) {
+                c += mod;
+        }
+        return c;
+}
+ll mul(ll a,ll b,ll mod) {
+        int c = (a*b)%mod;
+        return c;
+}
+ll div(ll a,ll b,ll mod) {
+        ll c = mul(a,InverseMod(b,mod),mod);
+        return c;
+}
+void inc(ll &a,ll b,ll mod) {
+        a = add(a,b,mod);
+}
+void dec(ll &a,ll b,ll mod) {
+        a = sub(a,b,mod);
+}
 struct custom_hash {
     static uint64_t splitmix64(uint64_t x) {
         // http://xorshift.di.unimi.it/splitmix64.c

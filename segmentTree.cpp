@@ -42,7 +42,7 @@ void updateRange(int l, int r,int val, int node = 1, int tl = 0, int tr = n-1) {
                 return;
         }
         if(l <= tl and tr <= r) {
-                upd(node,l,r,val);
+                upd(node,tl,tr,val);
                 return;
         }
         passDown(node, tl, tr);

@@ -34,8 +34,7 @@ struct Matrix {
 				int cur = 0;
 				FOR(k,0,N) {
 					int temp = a.arr[i][k] * b.arr[k][j];
-					if(temp >= MOD)
-						temp -= MOD;
+					temp %= MOD;
 					cur = (cur + temp);
 					if(cur >= MOD)
 						cur -= MOD;

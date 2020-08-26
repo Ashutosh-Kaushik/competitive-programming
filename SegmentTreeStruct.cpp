@@ -1,132 +1,62 @@
-const int N = 1e5+4 ;//  length of the intial array and is used in the segtree;
-std::vector<int> a(N,0);
-const int INF = INT_MAX;
+struct segmentTree {
+        int n;
+        vector<int> a, T, lazy;
 
-struct SegTree // just to use multiple segment tree without changing code;
-{
-        std::vector<int> t;
-        std::vector<int> lazy;
-        std::vector<bool> updateNeeded;
-        SegTree() {
-                t.assign(4*N,0);
-                lazy.assign(4*N+5,0);
-                updateNeeded.assign(4*N+5,0);
+        void init(int n) {
+                this->n = n;
+                a.assign(n, 0);
+                T.assign(4 * n + 1, 0);
+                lazy.assign(4 * n + 1, 0);
         }
 
-        void combine(int &cur, int &l, int &r) { //  update the combine function
-                cur = min(l,r);
+        int combine(int a, int b) {
+                return min(a, b);
         }
 
-        void passDown(int node, int val, int tl, int tr) {
-                t[node] = val;
-                if(tl != tr) {
-                        updateNeeded[2*node] = 1;
-                        updateNeeded[2*node+1] = 1;
-                        lazy[2*node] = val;
-                        lazy[2*node + 1] = val;
-                }
-                updateNeeded[node] = 0;
-        }
-        // build()
-        void build(int node = 1, int l = 0, int r = N-1) {
+        void build(int node, int l, int r) {
                 if(l == r) {
-                        t[node] = a[l];
+                        T[node] = a[l];
                         return;
                 }
                 int mid = (l + r) / 2;
-                build(2*node, l, mid);
-                build(2*node+1, mid+1,r);
-                combine(t[node], t[2*node], t[2*node+1]);
+                build(2 * node, l, mid);
+                build(2 * node + 1, mid + 1, r);
+                T[node] = combine(T[2 * node] + lazy[2 * node], T[2 * node + 1] + lazy[2 * node + 1]);
+                return;
         }
 
-        // query(l,r); 0 based indexing
-        int query(int l, int r, int node = 1, int tl = 0, int tr = N-1) {
-                
-                if(updateNeeded[node]) {
-                        passDown(node,lazy[node], tl, tr);
-                }
-
-                if(tl > tr or l > r or r < tl or tr < l) {
-                        return INF; // change; right now we are calculating minimum so return INF
-                }
-
-                if(tl >= l and tr <= r) {
-                        return t[node];
-                }
-
-                int mid = (tl + tr) / 2;
-                int p = query(l, r, 2*node, tl, mid);
-                int q =  query(l, r, 2*node+1, mid+1,tr);
-                int ret;
-                combine(ret, p, q);
-                return ret;
+        void prop(int node) {
+                lazy[2 * node] += lazy[node];
+                lazy[2 * node + 1] += lazy[node];
+                lazy[node] = 0;
+        }
+        int query(int node, int tl, int tr, int l, int r) {
+                if(r < tl || tr < l) return LLONG_MAX;
+                if(l <= tl && tr <= r) return T[node] + lazy[node];
+                int mid = (tl + tr) /  2;
+                prop(node);
+                int leftmin = query(2 * node, tl, mid, l, r);
+                int rightmin = query(2 * node + 1, mid+1, tr, l, r);
+                T[node] = combine(T[2 * node] + lazy[2 * node], T[2 * node + 1] + lazy[2 * node + 1]);
+                return combine(leftmin, rightmin);
 
         }
-
-        // update(l,r,val); 0 based indexing
-        void update(int l, int r, int val, int node = 1, int tl = 0, int tr = N-1) {
-                
-                if(updateNeeded[node]) {
-                        passDown(node, val, tl, tr);
-                }
-
-                if(tl > tr or l > r or r < tl or tr < l) {
+        int minimum(int l, int r) {
+                return query(1, 0, n-1, l, r);
+        }
+        void update(int node, int tl, int tr, int l, int r, int val) {
+                if(r < tl || tr < l) return;
+                if(l <= tl && tr <= r) {
+                        lazy[node] += val;
                         return;
                 }
-                if(tl >= l and tr <= r) {
-                        passDown(node, val, tl, tr);
-                        return;
-                }
+                prop(node);
                 int mid = (tl + tr) / 2;
-                update(l,r,val,2*node,tl,mid);
-                update(l,r,val,2*node+1,mid+1,tr);
-                combine(t[node], t[2*node], t[2*node+1]);
+                update(2 * node, tl, mid, l, r, val);
+                update(2 * node + 1, mid + 1, tr, l, r, val);
+                T[node] = combine(T[2 * node] + lazy[2 * node], T[2 * node + 1] + lazy[2 * node + 1]);
         }
-
-        //pquery(pos);  0 based indxing
-
-        int pquery(int pos, int node = 1, int tl = 0, int tr = N-1) {
-                if(updateNeeded[node]) {
-                        passDown(node,lazy[node], tl, tr);
-                }
-
-                if(pos < tl or pos > tr or tl > tr) {
-                        return INF; // change; right now we are calculating minimum so return INF
-                }
-
-                
-
-                if(tl == tr) {
-                        return t[node];
-                }
-
-                int mid = (tl + tr) / 2;
-                if(mid >= pos)
-                        return pquery(pos, 2*node, tl, mid);
-                else
-                        return pquery(pos, 2*node+1, mid+1,tr);
-
+        void increment(int l, int r, int val) {
+                update(1, 0, n-1, l, r, val);
         }
-        // pupdate(pos, val)
-        void pupdate(int pos, int val, int node = 1, int tl = 0, int tr = N-1) {
-                
-                if(updateNeeded[node]) {
-                        passDown(node, val, tl, tr);
-                }
-
-                if(pos < tl or pos > tr) {
-                        return;
-                }
-                if(tl == tr) {
-                        passDown(node, val, tl, tr);
-                        return;
-                }
-                int mid = (tl + tr) / 2;
-                if(mid >= pos)
-                        pupdate(pos,val,2*node,tl,mid);
-                else
-                        pupdate(pos, val,2*node+1,mid+1,tr);
-                combine(t[node], t[2*node], t[2*node+1]);
-        }
-        
 };

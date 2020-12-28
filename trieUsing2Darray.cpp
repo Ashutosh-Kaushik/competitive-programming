@@ -105,3 +105,5 @@ int main () {
 	}
 	cout << tot << endl;
 }
+
+// random comment to test git

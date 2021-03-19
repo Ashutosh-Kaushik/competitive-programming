@@ -1,15 +1,17 @@
 #include<bits/stdc++.h>
 using namespace std;
- 
+
 #define pb              push_back
-#define SZ(x)           (int)x.size()
-#define F               first
-#define S               second
-#define ALL(x)          x.begin(), x.end()
+#define sz(x)           (int)x.size()
+#define f               first
+#define s               second
+#define all(x)          x.begin(), x.end()
 #define fast            ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
-#define FOR(i, a, b)    for(int i = a; i < b; ++i)
+#define fr(i, a, b)     for(int i = a; i < b; ++i)
 #define endl            '\n'
- 
+#define MOD             1000000007
+#define ll              long long
+
 template<typename A, typename B> ostream& operator<<(ostream &os, const pair<A, B> &p) { return os << '(' << p.first << ", " << p.second << ')'; }
 template<typename T_container, typename T = typename enable_if<!is_same<T_container, string>::value, typename T_container::value_type>::type> ostream& operator<<(ostream &os, const T_container &v) { os << '{'; string sep; for (const T &x : v) os << sep << x, sep = ", "; return os << '}'; }
  
@@ -21,25 +23,17 @@ template<typename Head, typename... Tail> void dbg_out(Head H, Tail... T) { cerr
 #else
 #define debug(...) cerr << "(" << #__VA_ARGS__ << "):", dbg_out(__VA_ARGS__)
 #endif
- 
-typedef long long ll;
-typedef long double ld;
-typedef pair<int, int> pii;
-typedef pair<ll, ll> pll;
- 
-const ll INF = 1e18;
-const int MOD = 1e9 + 7;
-const ld PI = acosl(-1.0);
-const ld EPS = 1e-9;
- 
-void solve() {
 
+#define int long long
+
+void solve() {
+        
 }
- 
-int main() {
+
+int32_t main() {
         fast;
         int T = 1;
-        cin >> T;
+        // cin >> T;
         while(T--) {
                 solve();
         }

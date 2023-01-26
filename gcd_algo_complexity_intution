@@ -1,0 +1,22 @@
+gcd algo proof: 
+
+a, b & a > b
+
+after 1 step: 
+(a, b) -> (x, b)
+
+after 2nd step:
+
+(x, b) -> (x, x-1) as x-1 is the maximum possible value
+
+total sum after 2 steps = 2x - 1
+
+- if in 2nd step b -> x-1 => b >= 2x-1
+and as we already know a > b
+a + b > 2x-1 + 2x-1
+=> a +b > 2 * (2x-1);
+
+=> (a + b) > 2 * (result after 2 steps)
+
+so after every 2 steps, sum of number is half => O(2 * lg(a + b)) => O(lg(a+b))
+
